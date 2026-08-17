@@ -1,10 +1,10 @@
 package tests;
 
 import baseTest.BaseTest;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.Test;
 import pages.HomePage;
 import pages.LoginPage;
+import static org.testng.Assert.assertTrue;
 
 public class Logout extends BaseTest {
 
@@ -23,7 +23,7 @@ public class Logout extends BaseTest {
 
         homePage.clickLogout();
 
-        Assertions.assertTrue(
+        assertTrue(
                 page.locator("a[href='/login']").isVisible()
         );
     }

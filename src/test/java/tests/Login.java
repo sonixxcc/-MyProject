@@ -1,10 +1,10 @@
 package tests;
 
 import baseTest.BaseTest;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.Test;
 import pages.HomePage;
 import pages.LoginPage;
+import static org.testng.Assert.assertTrue;
 
 public class Login extends BaseTest {
 
@@ -21,7 +21,7 @@ public class Login extends BaseTest {
                 "Password123!"
         );
 
-        Assertions.assertTrue(
+        assertTrue(
                 page.locator("a[href='/logout']").isVisible()
         );
     }

@@ -1,7 +1,8 @@
 package baseTest;
 
 import com.microsoft.playwright.*;
-import org.junit.jupiter.api.*;
+import org.testng.ITestResult;
+import org.testng.annotations.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,10 +15,9 @@ public class BaseTest {
     protected BrowserContext context;
     protected Page page;
 
-    private boolean testFailed = false;
+    @BeforeMethod
+    public void setUp() {
 
-    @BeforeEach
-    void setUp() {
         playwright = Playwright.create();
 
         browser = playwright.chromium().launch(
@@ -31,47 +31,31 @@ public class BaseTest {
         page.navigate("https://demowebshop.tricentis.com");
     }
 
-    @AfterEach
-    void tearDown(TestInfo testInfo) {
+    @AfterMethod
+    public void tearDown(ITestResult result) {
 
-        if (testFailed && page != null) {
+        if (!result.isSuccess()) {
 
             try {
                 Path directory = Paths.get("screenshots");
-
                 Files.createDirectories(directory);
+
+                String fileName = result.getMethod().getMethodName()
+                        + "_" + System.currentTimeMillis() + ".png";
 
                 page.screenshot(
                         new Page.ScreenshotOptions()
-                                .setPath(
-                                        directory.resolve(
-                                                testInfo.getDisplayName() + ".png"
-                                        )
-                                )
+                                .setPath(directory.resolve(fileName))
                                 .setFullPage(true)
                 );
 
             } catch (Exception e) {
-                System.out.println(
-                        "Could not save screenshot: " + e.getMessage()
-                );
+                System.out.println("Screenshot error: " + e.getMessage());
             }
         }
 
-        if (context != null) {
-            context.close();
-        }
-
-        if (browser != null) {
-            browser.close();
-        }
-
-        if (playwright != null) {
-            playwright.close();
-        }
-    }
-
-    protected void markTestAsFailed() {
-        testFailed = true;
+        context.close();
+        browser.close();
+        playwright.close();
     }
 }

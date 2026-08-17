@@ -1,10 +1,10 @@
 package tests;
 
 import baseTest.BaseTest;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.Test;
 import pages.HomePage;
 import pages.RegisterPage;
+import static org.testng.Assert.assertTrue;
 
 public class Register extends BaseTest {
 
@@ -26,7 +26,7 @@ public class Register extends BaseTest {
         registerPage.enterConfirmPassword("Password123!");
         registerPage.clickRegister();
 
-        Assertions.assertTrue(
+        assertTrue(
                 page.locator(".result").isVisible()
         );
     }

@@ -1,15 +1,14 @@
 package tests;
-
 import baseTest.BaseTest;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.Test;
 import pages.HomePage;
 import pages.LoginPage;
+import static org.testng.Assert.assertTrue;
 
 public class InvalidLogin extends BaseTest {
 
     @Test
-    void invalidLogin() {
+    public void invalidLogin() {
 
         HomePage homePage = new HomePage(page);
         LoginPage loginPage = new LoginPage(page);
@@ -21,7 +20,7 @@ public class InvalidLogin extends BaseTest {
                 "ewfewfewf"
         );
 
-        Assertions.assertTrue(
+        assertTrue(
                 page.locator(".message-error").isVisible()
         );
     }

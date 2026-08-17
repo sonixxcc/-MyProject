@@ -10,11 +10,10 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter:5.13.4")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.testng:testng:7.11.0")
     testImplementation("com.microsoft.playwright:playwright:1.55.0")
 }
 
 tasks.test {
-    useJUnitPlatform()
+    useTestNG()
 }
