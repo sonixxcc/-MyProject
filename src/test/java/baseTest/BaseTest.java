@@ -1,12 +1,10 @@
 package baseTest;
 
 import com.microsoft.playwright.*;
+import config.ConfigManager;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import utils.ScreenshotUtils;
 
 public class BaseTest {
 
@@ -22,36 +20,27 @@ public class BaseTest {
 
         browser = playwright.chromium().launch(
                 new BrowserType.LaunchOptions()
-                        .setHeadless(false)
+                        .setHeadless(
+                                Boolean.parseBoolean(
+                                        ConfigManager.get("headless")
+                                )
+                        )
         );
 
         context = browser.newContext();
+
         page = context.newPage();
 
-        page.navigate("https://demowebshop.tricentis.com");
+        page.navigate(
+                ConfigManager.get("baseUrl")
+        );
     }
 
     @AfterMethod
     public void tearDown(ITestResult result) {
 
         if (!result.isSuccess()) {
-
-            try {
-                Path directory = Paths.get("screenshots");
-                Files.createDirectories(directory);
-
-                String fileName = result.getMethod().getMethodName()
-                        + "_" + System.currentTimeMillis() + ".png";
-
-                page.screenshot(
-                        new Page.ScreenshotOptions()
-                                .setPath(directory.resolve(fileName))
-                                .setFullPage(true)
-                );
-
-            } catch (Exception e) {
-                System.out.println("Screenshot error: " + e.getMessage());
-            }
+            ScreenshotUtils.takeScreenshot(page);
         }
 
         context.close();

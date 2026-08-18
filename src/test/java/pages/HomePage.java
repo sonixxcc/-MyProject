@@ -1,13 +1,12 @@
 package pages;
 
+import pages.BasePage;
 import com.microsoft.playwright.Page;
 
-public class HomePage {
-
-    private Page page;
+public class HomePage extends BasePage {
 
     public HomePage(Page page) {
-        this.page = page;
+        super(page);
     }
 
     public void clickLogin() {
